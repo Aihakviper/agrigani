@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 440" role="img" aria-label="Crop disease image analysis">
+  <rect width="720" height="440" rx="24" fill="#f7fbf4"/>
+  <rect x="38" y="42" width="308" height="356" rx="22" fill="#e7f3df"/>
+  <path d="M192 348c-54-54-72-132-45-203 78 28 125 93 132 178-24 17-53 25-87 25z" fill="#4a7c2e"/>
+  <path d="M198 330c12-78 51-138 121-179 24 76-2 150-61 199-23-3-43-10-60-20z" fill="#2d5016"/>
+  <circle cx="240" cy="218" r="18" fill="#d4af26"/>
+  <circle cx="174" cy="248" r="13" fill="#e67e22"/>
+  <circle cx="256" cy="284" r="10" fill="#e67e22"/>
+  <rect x="392" y="68" width="276" height="78" rx="18" fill="#fff" stroke="#dcead4"/>
+  <rect x="420" y="94" width="144" height="14" rx="7" fill="#2d5016"/>
+  <rect x="420" y="120" width="198" height="10" rx="5" fill="#b8d8a6"/>
+  <rect x="392" y="178" width="276" height="194" rx="18" fill="#fff" stroke="#dcead4"/>
+  <rect x="420" y="210" width="204" height="16" rx="8" fill="#4a7c2e"/>
+  <rect x="420" y="252" width="170" height="12" rx="6" fill="#b8d8a6"/>
+  <rect x="420" y="282" width="198" height="12" rx="6" fill="#b8d8a6"/>
+  <rect x="420" y="312" width="132" height="12" rx="6" fill="#b8d8a6"/>
+</svg>
