@@ -19,6 +19,8 @@ except ImportError:
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+SUPPORTED_CROPS = ["Cashew", "Cassava", "Maize", "Tomato"]
+
 # Initialize FastAPI app
 app = FastAPI(
     title="AgriGani ML Service - YOLOv8",
@@ -81,7 +83,8 @@ async def health_check():
         "status": "healthy",
         "model_loaded": predictor.model is not None,
         "model_type": "YOLOv8",
-        "classes_loaded": len(predictor.class_names)
+        "classes_loaded": len(predictor.class_names),
+        "supported_crops": SUPPORTED_CROPS,
     }
 
 
@@ -95,6 +98,7 @@ async def model_info():
         "input_size": [224, 224, 3],
         "classes": predictor.class_names,
         "num_classes": len(predictor.class_names),
+        "supported_crops": SUPPORTED_CROPS,
         "test_accuracy": "~90%"  # Update with your actual accuracy
     }
 
