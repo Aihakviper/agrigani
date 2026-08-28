@@ -1,0 +1,5 @@
+crop,total_images,correct_predictions,accuracy
+Cashew,881,847,0.961407
+Cassava,1053,1000,0.949668
+Maize,779,668,0.857510
+Tomato,735,567,0.771429

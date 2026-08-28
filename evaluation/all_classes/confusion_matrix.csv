@@ -1,0 +1,23 @@
+actual_class,Cashew anthracnose,Cashew gumosis,Cashew healthy,Cashew leaf miner,Cashew red rust,Cassava bacterial blight,Cassava brown spot,Cassava green mite,Cassava healthy,Cassava mosaic,Maize fall armyworm,Maize grasshoper,Maize healthy,Maize leaf beetle,Maize leaf blight,Maize leaf spot,Maize streak virus,Tomato healthy,Tomato leaf blight,Tomato leaf curl,Tomato septoria leaf spot,Tomato_verticulium_wilt
+Cashew anthracnose,219,0,5,7,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Cashew gumosis,0,58,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Cashew healthy,3,0,174,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Cashew leaf miner,9,0,1,176,3,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0
+Cashew red rust,1,0,0,1,220,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+Cassava bacterial blight,1,0,0,0,0,351,11,1,6,0,0,0,0,0,0,0,0,0,0,0,0,0
+Cassava brown spot,0,0,0,1,0,15,200,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0
+Cassava green mite,0,0,0,0,0,5,1,133,4,4,0,0,0,0,0,0,0,0,0,0,0,0
+Cassava healthy,0,0,0,0,0,0,0,2,155,0,0,0,0,0,0,0,0,0,0,0,0,0
+Cassava mosaic,0,0,0,0,0,1,0,0,0,161,0,0,0,0,0,0,0,0,0,0,0,0
+Maize fall armyworm,0,0,0,0,0,0,0,0,0,0,40,0,0,0,2,0,0,0,0,0,0,0
+Maize grasshoper,0,0,0,0,0,0,0,0,0,0,0,96,0,1,1,0,1,0,0,0,1,0
+Maize healthy,0,0,0,0,0,0,0,0,0,0,0,0,30,0,0,1,0,0,0,0,0,0
+Maize leaf beetle,0,0,0,0,0,0,0,0,0,0,3,3,0,125,1,2,1,0,0,0,0,0
+Maize leaf blight,0,0,0,0,0,0,0,0,0,0,0,0,0,1,102,38,5,0,0,0,0,0
+Maize leaf spot,0,0,0,0,0,0,0,0,0,0,1,0,6,0,15,154,5,0,0,0,0,0
+Maize streak virus,0,0,0,0,0,0,0,0,0,0,1,0,0,0,9,13,121,0,0,0,0,0
+Tomato healthy,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,60,0,5,0,0
+Tomato leaf blight,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,118,10,34,21
+Tomato leaf curl,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,47,17,2
+Tomato septoria leaf spot,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,31,4,263,12
+Tomato_verticulium_wilt,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,4,18,79
