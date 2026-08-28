@@ -1,0 +1,48 @@
+# Python bytecode and test caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+
+# Django runtime data
+*.sqlite3
+backend/media/
+media/
+uploads/
+staticfiles/
+
+# ML training outputs and local datasets
+runs/
+wandb/
+*.pt
+*.pth
+*.onnx
+data/
+backend/ml_service/plant_disease/
+
+# Notebook, editor, OS, and log files
+.ipynb_checkpoints/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+*.log
+
+# Frontend dependencies and build output
+node_modules/
+dist/
+build/
