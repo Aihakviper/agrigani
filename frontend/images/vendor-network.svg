@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 440" role="img" aria-label="Agricultural vendor referral network">
+  <rect width="720" height="440" rx="24" fill="#f8fbf5"/>
+  <path d="M92 324c126-82 240-85 346-10 64 45 118 52 198 4v70H92z" fill="#dfeecf"/>
+  <circle cx="362" cy="206" r="78" fill="#2d5016"/>
+  <path d="M324 214l29 29 59-76" fill="none" stroke="#fff" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+  <g fill="#fff" stroke="#b8d8a6" stroke-width="4">
+    <rect x="72" y="82" width="170" height="104" rx="20"/>
+    <rect x="478" y="82" width="170" height="104" rx="20"/>
+    <rect x="72" y="248" width="170" height="104" rx="20"/>
+    <rect x="478" y="248" width="170" height="104" rx="20"/>
+  </g>
+  <g stroke="#4a7c2e" stroke-width="10" stroke-linecap="round">
+    <path d="M242 134l58 38"/>
+    <path d="M478 134l-58 38"/>
+    <path d="M242 300l58-44"/>
+    <path d="M478 300l-58-44"/>
+  </g>
+  <g fill="#2d5016">
+    <rect x="104" y="116" width="84" height="12" rx="6"/>
+    <rect x="510" y="116" width="84" height="12" rx="6"/>
+    <rect x="104" y="282" width="84" height="12" rx="6"/>
+    <rect x="510" y="282" width="84" height="12" rx="6"/>
+  </g>
+  <g fill="#d4af26">
+    <circle cx="202" cy="122" r="14"/>
+    <circle cx="608" cy="122" r="14"/>
+    <circle cx="202" cy="288" r="14"/>
+    <circle cx="608" cy="288" r="14"/>
+  </g>
+</svg>

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 560" role="img" aria-label="AI crop diagnosis dashboard">
+  <rect width="760" height="560" rx="36" fill="#f4fbf1"/>
+  <path d="M70 430c126-72 228-67 308-27 90 46 176 35 312-57v154H70z" fill="#dfeecf"/>
+  <rect x="92" y="80" width="330" height="248" rx="24" fill="#fff" stroke="#b8d8a6" stroke-width="4"/>
+  <rect x="128" y="116" width="126" height="176" rx="16" fill="#e9f5e2"/>
+  <path d="M182 272c-27-32-35-76-21-115 40 17 65 52 70 99-14 10-30 15-49 16z" fill="#4a7c2e"/>
+  <path d="M189 260c6-43 27-76 65-99 12 43-3 83-35 111-11-1-21-5-30-12z" fill="#2d5016"/>
+  <circle cx="309" cy="146" r="18" fill="#e67e22"/>
+  <rect x="286" y="195" width="92" height="12" rx="6" fill="#b8d8a6"/>
+  <rect x="286" y="224" width="68" height="12" rx="6" fill="#b8d8a6"/>
+  <rect x="286" y="253" width="80" height="12" rx="6" fill="#b8d8a6"/>
+  <rect x="464" y="132" width="206" height="270" rx="28" fill="#2d5016"/>
+  <rect x="492" y="166" width="150" height="28" rx="14" fill="#d4af26"/>
+  <circle cx="568" cy="268" r="58" fill="#4a7c2e"/>
+  <path d="M536 272l22 22 45-56" fill="none" stroke="#fff" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="506" y="354" width="124" height="14" rx="7" fill="#eff8ea" opacity=".9"/>
+  <rect x="524" y="382" width="88" height="14" rx="7" fill="#eff8ea" opacity=".65"/>
+</svg>
