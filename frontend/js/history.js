@@ -1,340 +1,122 @@
-<<<<<<< HEAD
-/**
- * AgriGani History Page
- * Display and filter diagnosis history
- */
+/* ═══════════════════════════════════════════════════════════
+   HISTORY.JS — Filter + 3D stage mouse tilt
+   Special feature: entire archive grid tilts with mouse position
+   ═══════════════════════════════════════════════════════════ */
+(function () {
+  'use strict';
 
-class HistoryManager {
-    constructor() {
-        if (!Utils.requireAuth()) return;
-        Utils.updateAuthNav();
-        this.diagnoses = [];
-        this.farmers = [];
-        this.diseases = [];
-        this.filters = {
-            farmer_id: '',
-            disease_id: '',
-            region_code: ''
-        };
-        
-        this.init();
+  /* ── 3D STAGE GLOBAL TILT ── */
+  var stage = document.getElementById('archive-stage');
+  if (stage && !window.matchMedia('(prefers-reduced-motion:reduce)').matches) {
+    var currentTiltX = 0, currentTiltY = 0;
+
+    document.addEventListener('mousemove', function (e) {
+      var x = (e.clientX / window.innerWidth  - 0.5) * 5;   /* ±2.5deg */
+      var y = (e.clientY / window.innerHeight - 0.5) * -3;  /* ±1.5deg */
+      currentTiltX += (x - currentTiltX) * 0.06;
+      currentTiltY += (y - currentTiltY) * 0.06;
+    }, { passive: true });
+
+    function applyTilt() {
+      if (stage) {
+        stage.style.transform =
+          'perspective(1400px) rotateX(' + currentTiltY.toFixed(2) + 'deg) rotateY(' + currentTiltX.toFixed(2) + 'deg)';
+      }
+      requestAnimationFrame(applyTilt);
     }
+    requestAnimationFrame(applyTilt);
 
-    async init() {
-        await this.loadData();
-        this.setupFilters();
-        this.renderHistory();
-    }
+    /* Reset on mouse leave */
+    document.addEventListener('mouseleave', function () {
+      currentTiltX = 0; currentTiltY = 0;
+    });
+  }
 
-    async loadData() {
-        try {
-            // Load all data in parallel
-            const [diagnosesData, farmersData, diseasesData] = await Promise.all([
-                Utils.apiRequest(API_CONFIG.getEndpoint('DIAGNOSES')),
-                Utils.apiRequest(API_CONFIG.getEndpoint('FARMERS')),
-                Utils.apiRequest(API_CONFIG.getEndpoint('DISEASES'))
-            ]);
+  /* ── CASCADE ENTRY ANIMATION ── */
+  var cards = document.querySelectorAll('.archive-card');
+  if (!window.matchMedia('(prefers-reduced-motion:reduce)').matches) {
+    cards.forEach(function (c, i) {
+      c.style.opacity = '0';
+      c.style.transform = 'translateX(-20px)';
+      setTimeout(function () {
+        c.style.transition = 'opacity 0.45s var(--ease-smooth), transform 0.45s var(--ease-smooth)';
+        c.style.opacity = '1';
+        c.style.transform = 'translateX(0)';
+      }, 120 + i * 80);
+    });
+  }
 
-            this.diagnoses = diagnosesData.results || diagnosesData;
-            this.farmers = farmersData.results || farmersData;
-            this.diseases = diseasesData.results || diseasesData;
+  /* ── FILTER CHIPS ── */
+  var chips      = document.querySelectorAll('.chip');
+  var searchInput= document.getElementById('history-search');
+  var emptyState = document.getElementById('history-empty');
+  var activeFilter = 'all';
+  var query = '';
 
-            this.populateFilterDropdowns();
-        } catch (error) {
-            console.error('Error loading data:', error);
-            Utils.showToast('Error loading history', 'danger');
-        }
-    }
+  function applyFilters() {
+    var visible = 0;
+    cards.forEach(function (card) {
+      var type = (card.dataset.type || '').toLowerCase();
+      var conf = parseInt(card.dataset.conf || '0', 10);
+      var name = (card.querySelector('.archive-card__disease') || {}).textContent || '';
 
-    populateFilterDropdowns() {
-        // Populate farmer filter
-        const farmerSelect = document.getElementById('filterFarmer');
-        this.farmers.forEach(farmer => {
-            const option = document.createElement('option');
-            option.value = farmer.id;
-            option.textContent = `${farmer.full_name} (${farmer.phone_number})`;
-            farmerSelect.appendChild(option);
-        });
+      var typeOk = activeFilter === 'all'
+        || (activeFilter === 'crop'      && type === 'crop')
+        || (activeFilter === 'livestock' && type === 'livestock')
+        || (activeFilter === 'high'      && conf >= 90);
 
-        // Populate disease filter
-        const diseaseSelect = document.getElementById('filterDisease');
-        this.diseases.forEach(disease => {
-            const option = document.createElement('option');
-            option.value = disease.id;
-            option.textContent = disease.name;
-            diseaseSelect.appendChild(option);
-        });
-    }
+      var nameOk = !query || name.toLowerCase().includes(query.toLowerCase());
 
-    setupFilters() {
-        document.getElementById('filterFarmer').addEventListener('change', (e) => {
-            this.filters.farmer_id = e.target.value;
-            this.renderHistory();
-        });
+      if (typeOk && nameOk) {
+        card.style.display = '';
+        visible++;
+      } else {
+        card.style.display = 'none';
+      }
+    });
 
-        document.getElementById('filterDisease').addEventListener('change', (e) => {
-            this.filters.disease_id = e.target.value;
-            this.renderHistory();
-        });
+    if (emptyState) emptyState.classList.toggle('is-on', visible === 0);
+  }
 
-        document.getElementById('filterRegion').addEventListener('change', (e) => {
-            this.filters.region_code = e.target.value;
-            this.renderHistory();
-        });
-    }
+  chips.forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      chips.forEach(function (c) { c.classList.remove('is-on'); });
+      chip.classList.add('is-on');
+      activeFilter = chip.dataset.filter || 'all';
+      applyFilters();
+    });
+  });
 
-    getFilteredDiagnoses() {
-        return this.diagnoses.filter(diagnosis => {
-            if (this.filters.farmer_id && diagnosis.farmer != this.filters.farmer_id) {
-                return false;
-            }
-            if (this.filters.disease_id && diagnosis.disease != this.filters.disease_id) {
-                return false;
-            }
-            if (this.filters.region_code && diagnosis.region_code !== this.filters.region_code) {
-                return false;
-            }
-            return true;
-        });
-    }
+  if (searchInput) {
+    searchInput.addEventListener('input', function () {
+      query = this.value;
+      applyFilters();
+    });
+  }
 
-    renderHistory() {
-        const container = document.getElementById('historyContainer');
-        const loadingSpinner = document.getElementById('loadingSpinner');
-        const emptyState = document.getElementById('emptyState');
+  /* ── DELETE WITH FADE-SLIDE ── */
+  document.querySelectorAll('.btn--danger').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var card = btn.closest('.archive-card');
+      if (!card) return;
+      if (!confirm('Delete this diagnosis record?')) return;
 
-        const filteredDiagnoses = this.getFilteredDiagnoses();
+      card.style.transition = 'opacity 0.3s ease, transform 0.35s ease, max-height 0.4s ease, padding 0.4s ease, margin 0.4s ease';
+      card.style.opacity    = '0';
+      card.style.transform  = 'translateX(24px)';
+      card.style.maxHeight  = card.offsetHeight + 'px';
+      card.style.overflow   = 'hidden';
 
-        loadingSpinner.style.display = 'none';
+      setTimeout(function () {
+        card.style.maxHeight = '0';
+        card.style.padding   = '0';
+        card.style.margin    = '0';
+      }, 300);
 
-        if (filteredDiagnoses.length === 0) {
-            container.style.display = 'none';
-            emptyState.style.display = 'block';
-            return;
-        }
-
-        emptyState.style.display = 'none';
-        container.style.display = 'block';
-
-        const html = filteredDiagnoses.map(diagnosis => {
-            const confidence = Number(diagnosis.confidence_score || 0);
-            const imageUrl = Utils.resolveMediaUrl(diagnosis.image_url);
-=======
-/**
- * AgriGani History Page
- * Display and filter diagnosis history
- */
-
-class HistoryManager {
-    constructor() {
-        this.diagnoses = [];
-        this.farmers = [];
-        this.diseases = [];
-        this.filters = {
-            farmer_id: '',
-            disease_id: '',
-            region_code: ''
-        };
-        
-        this.init();
-    }
-
-    async init() {
-        await this.loadData();
-        this.setupFilters();
-        this.renderHistory();
-    }
-
-    async loadData() {
-        try {
-            // Load all data in parallel
-            const [diagnosesData, farmersData, diseasesData] = await Promise.all([
-                Utils.apiRequest(API_CONFIG.getEndpoint('DIAGNOSES')),
-                Utils.apiRequest(API_CONFIG.getEndpoint('FARMERS')),
-                Utils.apiRequest(API_CONFIG.getEndpoint('DISEASES'))
-            ]);
-
-            this.diagnoses = diagnosesData.results || diagnosesData;
-            this.farmers = farmersData.results || farmersData;
-            this.diseases = diseasesData.results || diseasesData;
-
-            this.populateFilterDropdowns();
-        } catch (error) {
-            console.error('Error loading data:', error);
-            Utils.showToast('Error loading history', 'danger');
-        }
-    }
-
-    populateFilterDropdowns() {
-        // Populate farmer filter
-        const farmerSelect = document.getElementById('filterFarmer');
-        this.farmers.forEach(farmer => {
-            const option = document.createElement('option');
-            option.value = farmer.id;
-            option.textContent = `${farmer.full_name} (${farmer.phone_number})`;
-            farmerSelect.appendChild(option);
-        });
-
-        // Populate disease filter
-        const diseaseSelect = document.getElementById('filterDisease');
-        this.diseases.forEach(disease => {
-            const option = document.createElement('option');
-            option.value = disease.id;
-            option.textContent = disease.name;
-            diseaseSelect.appendChild(option);
-        });
-    }
-
-    setupFilters() {
-        document.getElementById('filterFarmer').addEventListener('change', (e) => {
-            this.filters.farmer_id = e.target.value;
-            this.renderHistory();
-        });
-
-        document.getElementById('filterDisease').addEventListener('change', (e) => {
-            this.filters.disease_id = e.target.value;
-            this.renderHistory();
-        });
-
-        document.getElementById('filterRegion').addEventListener('change', (e) => {
-            this.filters.region_code = e.target.value;
-            this.renderHistory();
-        });
-    }
-
-    getFilteredDiagnoses() {
-        return this.diagnoses.filter(diagnosis => {
-            if (this.filters.farmer_id && diagnosis.farmer != this.filters.farmer_id) {
-                return false;
-            }
-            if (this.filters.disease_id && diagnosis.disease != this.filters.disease_id) {
-                return false;
-            }
-            if (this.filters.region_code && diagnosis.region_code !== this.filters.region_code) {
-                return false;
-            }
-            return true;
-        });
-    }
-
-    renderHistory() {
-        const container = document.getElementById('historyContainer');
-        const loadingSpinner = document.getElementById('loadingSpinner');
-        const emptyState = document.getElementById('emptyState');
-
-        const filteredDiagnoses = this.getFilteredDiagnoses();
-
-        loadingSpinner.style.display = 'none';
-
-        if (filteredDiagnoses.length === 0) {
-            container.style.display = 'none';
-            emptyState.style.display = 'block';
-            return;
-        }
-
-        emptyState.style.display = 'none';
-        container.style.display = 'block';
-
-        const html = filteredDiagnoses.map(diagnosis => {
-            const confidence = Number(diagnosis.confidence_score || 0);
->>>>>>> e6e80e1585eab5abf6fb939fd61354d35f8bd21e
-            return `
-            <div class="history-item">
-                <div class="history-header">
-                    <div>
-<<<<<<< HEAD
-                        <h3 class="history-disease">${diagnosis.disease_name || 'Unknown Disease'}</h3>
-                        <p class="history-date">
-                            <i class="bi bi-calendar3 me-2"></i>${Utils.formatDate(diagnosis.created_at)}
-=======
-                        <h3 class="history-disease">${diagnosis.disease_name || 'Unknown Disease'}</h3>
-                        <p class="history-date">
-                            <i class="bi bi-calendar3 me-2"></i>${Utils.formatDate(diagnosis.created_at)}
->>>>>>> e6e80e1585eab5abf6fb939fd61354d35f8bd21e
-                        </p>
-                    </div>
-                    <div class="confidence-badge ${Utils.getConfidenceClass(confidence)}">
-                        ${confidence.toFixed(1)}%
-                    </div>
-                </div>
-<<<<<<< HEAD
-
-                <div class="history-meta">
-                    <div class="history-meta-item">
-                        <i class="bi bi-person-fill"></i>
-                        <span>${diagnosis.farmer_name}</span>
-                    </div>
-                    ${diagnosis.location ? `
-                        <div class="history-meta-item">
-                            <i class="bi bi-geo-alt-fill"></i>
-                            <span>${diagnosis.location}</span>
-                        </div>
-                    ` : ''}
-                </div>
-
-                ${imageUrl ? `
-                    <div class="mb-3">
-                        <img src="${imageUrl}" 
-                             alt="Diagnosis Image" 
-                             class="history-image"
-                             onclick="window.open('${imageUrl}', '_blank')">
-                    </div>
-                ` : ''}
-
-                <div class="mt-3">
-                    <a href="diagnosis-detail.html?id=${diagnosis.id}" class="btn btn-sm btn-outline-primary">
-                        <i class="bi bi-eye me-2"></i>View Details
-=======
-
-                <div class="history-meta">
-                    <div class="history-meta-item">
-                        <i class="bi bi-person-fill"></i>
-                        <span>${diagnosis.farmer_name}</span>
-                    </div>
-                    ${diagnosis.location ? `
-                        <div class="history-meta-item">
-                            <i class="bi bi-geo-alt-fill"></i>
-                            <span>${diagnosis.location}</span>
-                        </div>
-                    ` : ''}
-                </div>
-
-                ${diagnosis.image_url ? `
-                    <div class="mb-3">
-                        <img src="${diagnosis.image_url}" 
-                             alt="Diagnosis Image" 
-                             class="history-image"
-                             onclick="window.open('${diagnosis.image_url}', '_blank')">
-                    </div>
-                ` : ''}
-
-                <div class="mt-3">
-                    <a href="diagnosis-detail.html?id=${diagnosis.id}" class="btn btn-sm btn-outline-primary">
-                        <i class="bi bi-eye me-2"></i>View Details
->>>>>>> e6e80e1585eab5abf6fb939fd61354d35f8bd21e
-                    </a>
-                </div>
-            </div>
-            `;
-        }).join('');
-<<<<<<< HEAD
-
-        container.innerHTML = html;
-    }
-}
-
-// Initialize when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-    new HistoryManager();
-});
-=======
-
-        container.innerHTML = html;
-    }
-}
-
-// Initialize when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-    new HistoryManager();
-});
->>>>>>> e6e80e1585eab5abf6fb939fd61354d35f8bd21e
+      setTimeout(function () {
+        card.remove();
+        applyFilters();
+      }, 700);
+    });
+  });
+})();

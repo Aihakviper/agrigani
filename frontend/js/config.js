@@ -6,7 +6,7 @@
 
 const API_CONFIG = {
     // Base URL - Change this to your backend URL
-    BASE_URL: 'http://127.0.0.1:8002',
+    BASE_URL: "http://localhost:8000/api/v1",
     
     // API Version
     API_VERSION: 'v1',
@@ -59,7 +59,7 @@ window.API_CONFIG = API_CONFIG;
 
 const API_CONFIG = {
     // Base URL - Change this to your backend URL
-    BASE_URL: 'http://localhost:8000',
+    BASE_URL: "http://localhost:8000/api/v1",
     
     // API Version
     API_VERSION: 'v1',
