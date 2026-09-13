@@ -1,9 +1,0 @@
-*,*::before,*::after{cursor:none!important;}
-#leaf-cursor{position:fixed;top:0;left:0;width:34px;height:44px;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);will-change:transform;}
-#leaf-cursor svg{width:100%;height:100%;filter:drop-shadow(0 0 7px rgba(59,196,106,0.5));transition:filter var(--t-mid,280ms),transform var(--t-fast,120ms);}
-#leaf-cursor[data-state="hover"] svg{filter:drop-shadow(0 0 16px rgba(59,196,106,0.9));transform:scale(1.22);}
-#leaf-cursor[data-state="grab"] svg{filter:drop-shadow(0 0 20px rgba(200,120,32,0.85));transform:scale(0.88) rotate(40deg);}
-#leaf-cursor[data-state="scan"] svg{animation:cursor-scan 0.7s ease-in-out infinite alternate;}
-@keyframes cursor-scan{from{filter:drop-shadow(0 0 8px rgba(59,196,106,0.5));}to{filter:drop-shadow(0 0 26px rgba(59,196,106,1));}}
-.cursor-trail{position:fixed;top:0;left:0;border-radius:50%;background:rgba(59,196,106,0.35);pointer-events:none;z-index:9998;transform:translate(-50%,-50%);will-change:transform;}
-body:not(:hover) #leaf-cursor{opacity:0;}
